@@ -1,7 +1,7 @@
 # 📚 Acervo Digital - Sua Biblioteca Inteligente
 
 <p align="center">
-  <img src="C:\Users\gabr\.gemini\antigravity\brain\3c322f26-bc73-44fb-94ce-ecb225748157\acervo_digital_banner_v2_1777599589178.png" width="100%" alt="Acervo Digital Banner" />
+  <img src="\my-collection-digital\assets\banner.png" width="100%" alt="Acervo Digital Banner" />
 </p>
 
 <p align="center">
@@ -85,7 +85,7 @@ Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
 Temos orgulho de apresentar os desenvolvedores por trás do **Acervo Digital**:
 
 <p align="center">
-  <img src="C:\Users\gabr\.gemini\antigravity\brain\3c322f26-bc73-44fb-94ce-ecb225748157\acervo_digital_team_banner_1777599678265.png" width="800px" alt="Equipe Acervo Digital" />
+  <img src="\my-collection-digital\assets\team_banner_v2.png" width="800px" alt="Equipe Acervo Digital" />
 </p>
 
 <p align="center">
