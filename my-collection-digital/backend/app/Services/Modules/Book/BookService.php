@@ -20,7 +20,7 @@ class BookService implements BookServiceInterface
     /**
      * Get all books from the catalog.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<int, Book>
+     * @return Collection<int, Book>
      */
     public function getAllBooks(): Collection
     {
@@ -29,9 +29,6 @@ class BookService implements BookServiceInterface
 
     /**
      * Get a specific book by ID.
-     *
-     * @param  int  $id
-     * @return \App\Models\Book|null
      */
     public function getBookById(int $id): ?Book
     {
@@ -41,9 +38,7 @@ class BookService implements BookServiceInterface
     /**
      * Create a new book in the catalog.
      *
-     * @param  array  $data
-     * @return \App\Models\Book
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function createBook(array $data): Book
     {
@@ -61,10 +56,7 @@ class BookService implements BookServiceInterface
     /**
      * Update an existing book in the catalog.
      *
-     * @param  int  $id
-     * @param  array  $data
-     * @return \App\Models\Book
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function updateBook(int $id, array $data): Book
     {
@@ -88,9 +80,6 @@ class BookService implements BookServiceInterface
 
     /**
      * Delete a book from the catalog.
-     *
-     * @param  int  $id
-     * @return bool
      */
     public function deleteBook(int $id): bool
     {

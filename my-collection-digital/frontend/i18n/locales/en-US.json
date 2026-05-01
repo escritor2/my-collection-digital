@@ -1,0 +1,28 @@
+{
+  "common": {
+    "dashboard": "Dashboard",
+    "catalog": "Catalog",
+    "shelf": "My Shelf",
+    "settings": "Settings",
+    "logout": "Logout",
+    "search": "Search...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading..."
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "reading_now": "Reading now",
+    "stats": "Statistics",
+    "xp_progress": "XP Progress",
+    "streak": "Streak",
+    "achievements": "Achievements",
+    "learning_path": "Learning Path"
+  },
+  "reader": {
+    "next_page": "Next",
+    "prev_page": "Previous",
+    "ai_chat": "AI Chat",
+    "annotations": "Annotations"
+  }
+}

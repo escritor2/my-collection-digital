@@ -1,0 +1,28 @@
+{
+  "common": {
+    "dashboard": "Dashboard",
+    "catalog": "Catálogo",
+    "shelf": "Mi Estante",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión",
+    "search": "Buscar...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando..."
+  },
+  "dashboard": {
+    "welcome": "Bienvenido de nuevo",
+    "reading_now": "Leyendo ahora",
+    "stats": "Estadísticas",
+    "xp_progress": "Progresso de XP",
+    "streak": "Racha",
+    "achievements": "Logros",
+    "learning_path": "Ruta de Aprendizaje"
+  },
+  "reader": {
+    "next_page": "Siguiente",
+    "prev_page": "Anterior",
+    "ai_chat": "Chat de IA",
+    "annotations": "Anotaciones"
+  }
+}

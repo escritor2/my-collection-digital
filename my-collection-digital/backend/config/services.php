@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'google_books' => [
+        'key' => env('GOOGLE_BOOKS_API_KEY'),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -33,6 +36,13 @@ return [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
+    ],
+
+    'groq' => [
+        'api_key' => env('GROQ_API_KEY'),
+        'base_url' => env('GROQ_BASE_URL', 'https://api.groq.com/openai/v1'),
+        'model' => env('GROQ_MODEL', 'llama-3.1-70b-versatile'),
+        'cache_ttl_seconds' => (int) env('GROQ_CACHE_TTL_SECONDS', 600),
     ],
 
 ];

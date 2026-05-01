@@ -3,12 +3,7 @@ import AppContent from '~/components/AppContent.vue';
 import AppHeader from '~/components/AppHeader.vue';
 import AppShell from '~/components/AppShell.vue';
 import type { BreadcrumbItem } from '~/types';
-
-import { router } from '#app';
-
-const logout = () => {
-    router.post('/logout');
-};
+const { logout } = useAuth();
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];

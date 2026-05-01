@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BookOpen, FolderGit2, LayoutGrid, Library } from 'lucide-vue-next';
+import { BookOpen, FolderGit2, LayoutGrid, Library, Tags, Folder, Search, Bell, Users } from 'lucide-vue-next';
 import AppLogo from '~/components/AppLogo.vue';
 import NavFooter from '~/components/NavFooter.vue';
 import NavMain from '~/components/NavMain.vue';
@@ -30,6 +30,31 @@ const mainNavItems: NavItem[] = [
         title: 'Catálogo',
         href: '/books',
         icon: Library,
+    },
+    {
+        title: 'Busca',
+        href: '/search',
+        icon: Search,
+    },
+    {
+        title: 'Tags',
+        href: '/tags',
+        icon: Tags,
+    },
+    {
+        title: 'Coleções',
+        href: '/collections',
+        icon: Folder,
+    },
+    {
+        title: 'Retenção',
+        href: '/retention',
+        icon: Bell,
+    },
+    {
+        title: 'Social',
+        href: '/social',
+        icon: Users,
     },
 ];
 

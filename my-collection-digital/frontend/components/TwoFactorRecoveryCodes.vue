@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Form } from '#app';
 import { Eye, EyeOff, LockKeyhole, RefreshCw } from 'lucide-vue-next';
 import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import AlertError from '~/components/AlertError.vue';
@@ -12,7 +11,6 @@ import {
     CardTitle,
 } from '~/components/ui/card';
 import { useTwoFactorAuth } from '~/composables/useTwoFactorAuth';
-import { regenerateRecoveryCodes } from '~/routes/two-factor';
 
 const { recoveryCodesList, fetchRecoveryCodes, errors } = useTwoFactorAuth();
 const isRecoveryCodesVisible = ref<boolean>(false);
@@ -62,22 +60,18 @@ onMounted(async () => {
                     codes
                 </Button>
 
-                <Form
+                <form
                     v-if="isRecoveryCodesVisible && recoveryCodesList.length"
-                    v-bind="regenerateRecoveryCodes.form()"
-                    method="post"
-                    :options="{ preserveScroll: true }"
-                    @success="fetchRecoveryCodes"
-                    #default="{ processing }"
+                    @submit.prevent="fetchRecoveryCodes"
                 >
                     <Button
                         variant="secondary"
                         type="submit"
-                        :disabled="processing"
+                        :disabled="false"
                     >
                         <RefreshCw /> Regenerate codes
                     </Button>
-                </Form>
+                </form>
             </div>
             <div
                 :class="[

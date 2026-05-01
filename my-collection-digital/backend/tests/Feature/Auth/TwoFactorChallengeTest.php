@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 
 beforeEach(function () {
@@ -33,9 +32,5 @@ test('two factor challenge can be rendered', function () {
         'password' => 'password',
     ]);
 
-    $this->get(route('two-factor.login'))
-        ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page
-            ->component('auth/TwoFactorChallenge'),
-        );
+    $this->get(route('two-factor.login'))->assertOk();
 });

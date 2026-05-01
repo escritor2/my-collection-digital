@@ -1,11 +1,16 @@
 import { ref } from 'vue';
 
 export const useAuth = () => {
-    const user = ref<any>(null);
-    const isAuthenticated = ref(false);
+    const user = useState<any>('auth-user', () => null);
+    const isAuthenticated = useState<boolean>('auth-authenticated', () => false);
+
+    const clearAuthState = () => {
+        user.value = null;
+        isAuthenticated.value = false;
+    };
 
     const login = async (credentials: any) => {
-        const { apiFetch, fetchCsrfCookie, getXsrfToken } = useApi();
+        const { apiFetch, fetchCsrfCookie, getXsrfToken, baseURL } = useApi();
         
         // 1. Get CSRF Cookie first
         await fetchCsrfCookie();
@@ -14,7 +19,7 @@ export const useAuth = () => {
 
         // 2. Perform Login (hitting Laravel's default Fortify/Sanctum login route)
         // Note: Login route is outside of /api prefix in standard Laravel
-        await $fetch('http://127.0.0.1:8000/login', {
+        await $fetch(`${baseURL}/login`, {
             method: 'POST',
             body: credentials,
             credentials: 'include',
@@ -29,10 +34,10 @@ export const useAuth = () => {
     };
 
     const logout = async () => {
-        const { apiFetch, getXsrfToken } = useApi();
+        const { apiFetch, getXsrfToken, baseURL } = useApi();
         const xsrfToken = getXsrfToken();
         try {
-            await $fetch('http://127.0.0.1:8000/logout', {
+            await $fetch(`${baseURL}/logout`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 
@@ -43,8 +48,7 @@ export const useAuth = () => {
         } catch (e) {
             console.error('Logout error', e);
         } finally {
-            user.value = null;
-            isAuthenticated.value = false;
+            clearAuthState();
         }
     };
 
@@ -55,8 +59,7 @@ export const useAuth = () => {
             user.value = response;
             isAuthenticated.value = true;
         } catch (e) {
-            user.value = null;
-            isAuthenticated.value = false;
+            clearAuthState();
         }
     };
 
@@ -65,7 +68,8 @@ export const useAuth = () => {
         isAuthenticated,
         login,
         logout,
-        fetchUser
+        fetchUser,
+        clearAuthState,
     };
 };
 

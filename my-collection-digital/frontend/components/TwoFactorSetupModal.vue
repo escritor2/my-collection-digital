@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Form } from '#app';
 import { useClipboard } from '@vueuse/core';
 import { Check, Copy, ScanLine } from 'lucide-vue-next';
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue';
@@ -21,7 +20,6 @@ import {
 import { Spinner } from '~/components/ui/spinner';
 import { useAppearance } from '~/composables/useAppearance';
 import { useTwoFactorAuth } from '~/composables/useTwoFactorAuth';
-import { confirm } from '~/routes/two-factor';
 import type { TwoFactorConfigContent } from '~/types';
 
 type Props = {
@@ -236,15 +234,7 @@ watch(
                 </template>
 
                 <template v-else>
-                    <Form
-                        v-bind="confirm.form()"
-                        error-bag="confirmTwoFactorAuthentication"
-                        reset-on-error
-                        @finish="code = ''"
-                        @success="isOpen = false"
-                        v-slot="{ errors, processing }"
-                    >
-                        <input type="hidden" name="code" :value="code" />
+                    <form class="w-full">
                         <div
                             ref="pinInputContainerRef"
                             class="relative w-full space-y-3"
@@ -256,7 +246,7 @@ watch(
                                     id="otp"
                                     v-model="code"
                                     :maxlength="6"
-                                    :disabled="processing"
+                                    :disabled="false"
                                 >
                                     <InputOTPGroup>
                                         <InputOTPSlot
@@ -266,7 +256,7 @@ watch(
                                         />
                                     </InputOTPGroup>
                                 </InputOTP>
-                                <InputError :message="errors?.code" />
+                                <InputError :message="undefined" />
                             </div>
 
                             <div class="flex w-full items-center space-x-5">
@@ -275,20 +265,21 @@ watch(
                                     variant="outline"
                                     class="w-auto flex-1"
                                     @click="showVerificationStep = false"
-                                    :disabled="processing"
+                                    :disabled="false"
                                 >
                                     Back
                                 </Button>
                                 <Button
                                     type="submit"
                                     class="w-auto flex-1"
-                                    :disabled="processing || code.length < 6"
+                                    :disabled="code.length < 6"
+                                    @click.prevent="() => { isOpen = false; code = '' }"
                                 >
                                     Confirm
                                 </Button>
                             </div>
                         </div>
-                    </Form>
+                    </form>
                 </template>
             </div>
         </DialogContent>

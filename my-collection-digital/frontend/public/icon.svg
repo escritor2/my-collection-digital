@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Meu Acervo Digital">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#22c55e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="#0b1220"/>
+  <rect x="96" y="96" width="320" height="320" rx="64" fill="url(#g)" opacity="0.16"/>
+  <path d="M160 172c0-17.673 14.327-32 32-32h168c17.673 0 32 14.327 32 32v196c0 17.673-14.327 32-32 32H192c-17.673 0-32-14.327-32-32V172z" fill="#e5e7eb" opacity="0.12"/>
+  <path d="M198 174h116c10 0 18 8 18 18v164c0 10-8 18-18 18H198c-10 0-18-8-18-18V192c0-10 8-18 18-18z" fill="#ffffff" opacity="0.88"/>
+  <path d="M332 174h-34c10 0 18 8 18 18v164c0 10-8 18-18 18h34c10 0 18-8 18-18V192c0-10-8-18-18-18z" fill="#111827" opacity="0.08"/>
+  <path d="M210 226h96" stroke="#7c3aed" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
+  <path d="M210 270h68" stroke="#22c55e" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
+  <path d="M210 314h88" stroke="#0f172a" stroke-width="18" stroke-linecap="round" opacity="0.25"/>
+</svg>
+

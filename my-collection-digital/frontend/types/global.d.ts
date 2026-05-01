@@ -13,22 +13,8 @@ declare module 'vite/client' {
     }
 }
 
-declare module '@inertiajs/core' {
-    export interface InertiaConfig {
-        sharedPageProps: {
-            name: string;
-            auth: Auth;
-            sidebarOpen: boolean;
-            [key: string]: unknown;
-        };
-    }
-}
-
 declare module 'vue' {
     interface ComponentCustomProperties {
-        $inertia: typeof Router;
-        $page: Page;
-        $headManager: ReturnType<typeof createHeadManager>;
     }
 }
 

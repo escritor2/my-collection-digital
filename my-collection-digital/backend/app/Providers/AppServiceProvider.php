@@ -2,29 +2,28 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Controller;
+use App\Interfaces\Modules\Book\BookRepositoryInterface;
+use App\Interfaces\Modules\Book\BookServiceInterface;
+use App\Interfaces\Modules\ReadingSession\ReadingSessionRepositoryInterface;
+use App\Interfaces\Modules\ReadingSession\ReadingSessionServiceInterface;
+use App\Interfaces\Modules\Statistics\StatisticsServiceInterface;
+// Importar Interfaces
+use App\Interfaces\Modules\UserShelf\UserBookRepositoryInterface;
+use App\Interfaces\Modules\UserShelf\UserBookServiceInterface;
+use App\Repositories\Modules\Book\BookRepository;
+use App\Repositories\Modules\ReadingSession\ReadingSessionRepository;
+use App\Repositories\Modules\UserShelf\UserBookRepository;
+use App\Services\Modules\Book\BookService;
+use App\Services\Modules\ReadingSession\ReadingSessionService;
+// Importar Implementações
+use App\Services\Modules\Statistics\StatisticsService;
+use App\Services\Modules\UserShelf\UserBookService;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-
-// Importar Interfaces
-use App\Interfaces\Modules\Book\BookRepositoryInterface;
-use App\Interfaces\Modules\Book\BookServiceInterface;
-use App\Interfaces\Modules\UserShelf\UserBookRepositoryInterface;
-use App\Interfaces\Modules\UserShelf\UserBookServiceInterface;
-use App\Interfaces\Modules\ReadingSession\ReadingSessionRepositoryInterface;
-use App\Interfaces\Modules\ReadingSession\ReadingSessionServiceInterface;
-use App\Interfaces\Modules\Statistics\StatisticsServiceInterface;
-
-// Importar Implementações
-use App\Repositories\Modules\Book\BookRepository;
-use App\Repositories\Modules\UserShelf\UserBookRepository;
-use App\Repositories\Modules\ReadingSession\ReadingSessionRepository;
-use App\Services\Modules\Book\BookService;
-use App\Services\Modules\UserShelf\UserBookService;
-use App\Services\Modules\ReadingSession\ReadingSessionService;
-use App\Services\Modules\Statistics\StatisticsService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -51,6 +50,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        
+        // Configurar rate limiting
+        Controller::configureRateLimiting();
     }
 
     /**

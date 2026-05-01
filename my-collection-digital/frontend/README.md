@@ -2,6 +2,13 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## Environment variables
+
+Create a `.env` file in `frontend/` based on `.env.example`.
+
+- `NUXT_PUBLIC_API_BASE_URL`: backend base URL (Laravel). Example: `http://127.0.0.1:8000`
+- `NUXT_PUBLIC_APP_ENV`: `development` | `staging` | `production`
+
 ## Setup
 
 Make sure to install dependencies:

@@ -5,21 +5,21 @@ namespace App\Http\Controllers\Modules\ReadingSession;
 use App\Http\Controllers\Controller;
 use App\Interfaces\Modules\ReadingSession\ReadingSessionServiceInterface;
 use App\Interfaces\Modules\UserShelf\UserBookServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class ReadingSessionController extends Controller
 {
     protected ReadingSessionServiceInterface $readingSessionService;
+
     protected UserBookServiceInterface $userBookService;
 
     public function __construct(
         ReadingSessionServiceInterface $readingSessionService,
         UserBookServiceInterface $userBookService
-    )
-    {
+    ) {
         $this->readingSessionService = $readingSessionService;
         $this->userBookService = $userBookService;
     }
@@ -27,34 +27,32 @@ class ReadingSessionController extends Controller
     /**
      * Display a listing of the user's reading sessions.
      *
-     * @return \Inertia\Response
+     * @return JsonResponse
      */
     public function index()
     {
         $readingSessions = $this->readingSessionService->getUserReadingSessions(Auth::id());
-        return Inertia::render('ReadingSessions/Index', [
-            'readingSessions' => $readingSessions,
+
+        return response()->json([
+            'data' => $readingSessions,
         ]);
     }
 
     /**
      * Show the form for creating a new reading session.
      *
-     * @return \Inertia\Response
+     * @return JsonResponse
      */
     public function create()
     {
-        $userBooks = $this->userBookService->getUserShelf(Auth::id());
-        return Inertia::render('ReadingSessions/Create', [
-            'userBooks' => $userBooks,
-        ]);
+        // Forms are handled by the frontend
+        return response()->json(['message' => 'Not implemented'], 501);
     }
 
     /**
      * Store a newly created reading session in storage (start session).
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
@@ -70,37 +68,37 @@ class ReadingSessionController extends Controller
                 $validatedData
             );
 
-            return redirect()->route('reading-sessions.index')->with('success', 'Sessão de leitura iniciada com sucesso!');
+            return response()->json([
+                'message' => 'Sessão de leitura iniciada com sucesso!',
+                'data' => $session,
+            ], 201);
         } catch (ValidationException $e) {
-            return redirect()->back()->withErrors($e->errors())->withInput();
+            return response()->json(['errors' => $e->errors()], 422);
         }
     }
 
     /**
      * Display the specified reading session.
      *
-     * @param  int  $id
-     * @return \Inertia\Response
+     * @return JsonResponse
      */
     public function show(int $id)
     {
         $session = $this->readingSessionService->getReadingSessionById($id, Auth::id());
 
-        if (!$session) {
-            abort(404);
+        if (! $session) {
+            return response()->json(['message' => 'Sessão não encontrada'], 404);
         }
 
-        return Inertia::render('ReadingSessions/Show', [
-            'readingSession' => $session,
+        return response()->json([
+            'data' => $session,
         ]);
     }
 
     /**
      * Update the specified reading session in storage (end session).
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return JsonResponse
      */
     public function update(Request $request, int $id)
     {
@@ -112,21 +110,26 @@ class ReadingSessionController extends Controller
 
             $session = $this->readingSessionService->endReadingSession($id, Auth::id(), $validatedData);
 
-            return redirect()->route('reading-sessions.index')->with('success', 'Sessão de leitura finalizada e progresso atualizado!');
+            return response()->json([
+                'message' => 'Sessão de leitura finalizada e progresso atualizado!',
+                'data' => $session,
+            ]);
         } catch (ValidationException $e) {
-            return redirect()->back()->withErrors($e->errors())->withInput();
+            return response()->json(['errors' => $e->errors()], 422);
         }
     }
 
     /**
      * Remove the specified reading session from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return JsonResponse
      */
     public function destroy(int $id)
     {
         $this->readingSessionService->deleteReadingSession($id, Auth::id());
-        return redirect()->route('reading-sessions.index')->with('success', 'Sessão de leitura removida com sucesso!');
+
+        return response()->json([
+            'message' => 'Sessão de leitura removida com sucesso!',
+        ]);
     }
 }

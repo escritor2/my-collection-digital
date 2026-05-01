@@ -6,20 +6,21 @@ use App\Interfaces\Modules\ReadingSession\ReadingSessionRepositoryInterface;
 use App\Interfaces\Modules\ReadingSession\ReadingSessionServiceInterface;
 use App\Interfaces\Modules\UserShelf\UserBookRepositoryInterface;
 use App\Models\ReadingSession;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\ValidationException;
 
 class ReadingSessionService implements ReadingSessionServiceInterface
 {
     protected ReadingSessionRepositoryInterface $readingSessionRepository;
+
     protected UserBookRepositoryInterface $userBookRepository;
 
     public function __construct(
         ReadingSessionRepositoryInterface $readingSessionRepository,
         UserBookRepositoryInterface $userBookRepository
-    )
-    {
+    ) {
         $this->readingSessionRepository = $readingSessionRepository;
         $this->userBookRepository = $userBookRepository;
     }
@@ -27,8 +28,7 @@ class ReadingSessionService implements ReadingSessionServiceInterface
     /**
      * Get all reading sessions for a specific user.
      *
-     * @param  int  $userId
-     * @return \Illuminate\Database\Eloquent\Collection<int, ReadingSession>
+     * @return Collection<int, ReadingSession>
      */
     public function getUserReadingSessions(int $userId): Collection
     {
@@ -37,10 +37,6 @@ class ReadingSessionService implements ReadingSessionServiceInterface
 
     /**
      * Get a specific reading session by ID for a user.
-     *
-     * @param  int  $id
-     * @param  int  $userId
-     * @return \App\Models\ReadingSession|null
      */
     public function getReadingSessionById(int $id, int $userId): ?ReadingSession
     {
@@ -50,17 +46,13 @@ class ReadingSessionService implements ReadingSessionServiceInterface
     /**
      * Start a new reading session.
      *
-     * @param  int  $userId
-     * @param  int  $userBookId
-     * @param  array  $data
-     * @return \App\Models\ReadingSession
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function startReadingSession(int $userId, int $userBookId, array $data): ReadingSession
     {
         $userBook = $this->userBookRepository->findUserBookById($userBookId, $userId);
 
-        if (!$userBook) {
+        if (! $userBook) {
             throw ValidationException::withMessages([
                 'user_book_id' => 'Livro não encontrado na sua estante para iniciar a sessão.',
             ]);
@@ -89,18 +81,14 @@ class ReadingSessionService implements ReadingSessionServiceInterface
     /**
      * End an existing reading session.
      *
-     * @param  int  $readingSessionId
-     * @param  int  $userId
-     * @param  array  $data
-     * @return \App\Models\ReadingSession
-     * @throws \Illuminate\Validation\ValidationException
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws ValidationException
+     * @throws ModelNotFoundException
      */
     public function endReadingSession(int $readingSessionId, int $userId, array $data): ReadingSession
     {
         $session = $this->readingSessionRepository->findReadingSessionById($readingSessionId, $userId);
 
-        if (!$session) {
+        if (! $session) {
             throw ValidationException::withMessages([
                 'reading_session_id' => 'Sessão de leitura não encontrada.',
             ]);
@@ -136,16 +124,13 @@ class ReadingSessionService implements ReadingSessionServiceInterface
     /**
      * Delete a reading session.
      *
-     * @param  int  $id
-     * @param  int  $userId
-     * @return bool
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function deleteReadingSession(int $id, int $userId): bool
     {
         $session = $this->readingSessionRepository->findReadingSessionById($id, $userId);
 
-        if (!$session) {
+        if (! $session) {
             throw ValidationException::withMessages([
                 'reading_session_id' => 'Sessão de leitura não encontrada.',
             ]);
@@ -157,9 +142,7 @@ class ReadingSessionService implements ReadingSessionServiceInterface
     /**
      * Get all reading sessions for a specific user book.
      *
-     * @param  int  $userBookId
-     * @param  int  $userId
-     * @return \Illuminate\Database\Eloquent\Collection<int, ReadingSession>
+     * @return Collection<int, ReadingSession>
      */
     public function getReadingSessionsByUserBook(int $userBookId, int $userId): Collection
     {

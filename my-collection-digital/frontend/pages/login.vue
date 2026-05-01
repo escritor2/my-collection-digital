@@ -7,6 +7,7 @@ useHead({
 });
 
 const status = ref('');
+const { normalize } = useApiError();
 const form = reactive({
     email: '',
     password: '',
@@ -19,18 +20,23 @@ const form = reactive({
 const submit = async () => {
     form.processing = true;
     try {
-        const { login } = useAuth();
+        const { login, fetchUser } = useAuth();
         await login({
             email: form.email,
             password: form.password,
             remember: form.remember
         });
+        
+        // Ensure user data is fetched before redirecting
+        await fetchUser();
+        
         navigateTo('/dashboard');
     } catch (error: any) {
-        if (error.response?.status === 422) {
-            form.errors = error.response._data.errors || {};
+        const err = normalize(error);
+        if (err.status === 422) {
+            form.errors = err.fieldErrors || {};
         } else {
-            status.value = 'Falha no login. Verifique suas credenciais.';
+            status.value = err.message;
         }
     } finally {
         form.processing = false;
@@ -61,6 +67,7 @@ const submit = async () => {
                         required
                         autofocus
                         autocomplete="username"
+                        aria-label="Email"
                     />
                     <div v-if="form.errors.email" class="text-red-400 text-xs mt-1">{{ form.errors.email }}</div>
                 </div>
@@ -74,6 +81,7 @@ const submit = async () => {
                         v-model="form.password"
                         required
                         autocomplete="current-password"
+                        aria-label="Senha"
                     />
                     <div v-if="form.errors.password" class="text-red-400 text-xs mt-1">{{ form.errors.password }}</div>
                 </div>

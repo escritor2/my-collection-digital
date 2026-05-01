@@ -27,6 +27,7 @@ class BookRepository implements BookRepositoryInterface
     {
         $book = Book::findOrFail($id);
         $book->update($data);
+
         return $book;
     }
 

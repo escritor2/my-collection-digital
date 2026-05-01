@@ -5,26 +5,47 @@ namespace App\Repositories\Modules\UserShelf;
 use App\Interfaces\Modules\UserShelf\UserBookRepositoryInterface;
 use App\Models\UserBook;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserBookRepository implements UserBookRepositoryInterface
 {
     /**
      * Get all user books for a specific user.
      *
-     * @param  int  $userId
-     * @return \Illuminate\Database\Eloquent\Collection<int, UserBook>
+     * @return Collection<int, UserBook>
      */
-    public function getAllUserBooks(int $userId): Collection
+    public function getAllUserBooks(int $userId, array $filters = []): Collection
     {
-        return UserBook::where('user_id', $userId)->with('book')->get();
+        $q = UserBook::query()
+            ->where('user_id', $userId)
+            ->with(['book', 'tags', 'collections']);
+
+        if (! empty($filters['status'])) {
+            $q->where('status', $filters['status']);
+        }
+
+        if (! empty($filters['q'])) {
+            $search = trim($filters['q']);
+            $q->whereHas('book', function ($b) use ($search) {
+                $b->where('title', 'like', '%'.$search.'%')
+                    ->orWhere('author', 'like', '%'.$search.'%')
+                    ->orWhere('isbn', 'like', '%'.$search.'%');
+            });
+        }
+
+        if (! empty($filters['tag_id'])) {
+            $q->whereHas('tags', fn ($t) => $t->where('tags.id', (int) $filters['tag_id']));
+        }
+
+        if (! empty($filters['collection_id'])) {
+            $q->whereHas('collections', fn ($c) => $c->where('collections.id', (int) $filters['collection_id']));
+        }
+
+        return $q->get();
     }
 
     /**
      * Find a user book by its ID for a specific user.
-     *
-     * @param  int  $id
-     * @param  int  $userId
-     * @return \App\Models\UserBook|null
      */
     public function findUserBookById(int $id, int $userId): ?UserBook
     {
@@ -33,10 +54,6 @@ class UserBookRepository implements UserBookRepositoryInterface
 
     /**
      * Find a user book by book ID for a specific user.
-     *
-     * @param  int  $bookId
-     * @param  int  $userId
-     * @return \App\Models\UserBook|null
      */
     public function findUserBookByBookId(int $bookId, int $userId): ?UserBook
     {
@@ -45,9 +62,6 @@ class UserBookRepository implements UserBookRepositoryInterface
 
     /**
      * Create a new user book entry.
-     *
-     * @param  array  $data
-     * @return \App\Models\UserBook
      */
     public function create(array $data): UserBook
     {
@@ -57,23 +71,18 @@ class UserBookRepository implements UserBookRepositoryInterface
     /**
      * Update an existing user book entry.
      *
-     * @param  int  $id
-     * @param  array  $data
-     * @return \App\Models\UserBook
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws ModelNotFoundException
      */
     public function update(int $id, array $data): UserBook
     {
         $userBook = UserBook::findOrFail($id);
         $userBook->update($data);
+
         return $userBook;
     }
 
     /**
      * Delete a user book entry.
-     *
-     * @param  int  $id
-     * @return bool
      */
     public function delete(int $id): bool
     {

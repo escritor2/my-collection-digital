@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Modules\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\Modules\Statistics\StatisticsServiceInterface;
-use Inertia\Inertia;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -19,17 +19,14 @@ class DashboardController extends Controller
     /**
      * Display the user's dashboard with reading statistics.
      *
-     * @return \Inertia\Response
+     * @return JsonResponse
      */
     public function index()
     {
         $statistics = $this->statisticsService->getUserReadingStatistics(Auth::id());
 
-        return Inertia::render(
-            'Dashboard',
-            [
-                'statistics' => $statistics,
-            ]
-        );
+        return response()->json([
+            'data' => $statistics,
+        ]);
     }
 }

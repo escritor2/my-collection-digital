@@ -1,6 +1,10 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @import 'tw-animate-css';
+
+@import '@fontsource/atkinson-hyperlegible/400.css';
+@import '@fontsource/atkinson-hyperlegible/700.css';
 
 @source '../../**/*.vue';
 
@@ -78,6 +82,14 @@
             'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
             'Noto Color Emoji';
     }
+}
+
+/* Dyslexia-friendly mode (Phase 5) */
+.dyslexia body,
+.dyslexia html {
+  font-family: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: 0.015em;
+  line-height: 1.6;
 }
 
 :root {

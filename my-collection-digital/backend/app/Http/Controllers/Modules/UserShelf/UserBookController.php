@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Modules\UserShelf;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\Modules\UserShelf\UserBookServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -21,11 +21,19 @@ class UserBookController extends Controller
     /**
      * Display a listing of the user's books (shelf).
      *
-     * @return \Inertia\Response
+     * @return JsonResponse
      */
     public function index()
     {
-        $userBooks = $this->userBookService->getUserShelf(Auth::id());
+        $filters = request()->validate([
+            'q' => ['nullable', 'string', 'max:200'],
+            'status' => ['nullable', 'string', 'in:quero_ler,lendo,lido,abandonei'],
+            'tag_id' => ['nullable', 'integer'],
+            'collection_id' => ['nullable', 'integer'],
+        ]);
+
+        $userBooks = $this->userBookService->getUserShelf(Auth::id(), $filters);
+
         return response()->json([
             'data' => $userBooks,
         ]);
@@ -34,8 +42,7 @@ class UserBookController extends Controller
     /**
      * Store a newly created user book in storage (add to shelf).
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
@@ -49,7 +56,7 @@ class UserBookController extends Controller
 
             return response()->json([
                 'message' => 'Livro adicionado à sua estante com sucesso!',
-                'data' => $userBook
+                'data' => $userBook,
             ], 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
@@ -59,14 +66,13 @@ class UserBookController extends Controller
     /**
      * Display the specified user book.
      *
-     * @param  int  $id
-     * @return \Inertia\Response
+     * @return JsonResponse
      */
     public function show(int $id)
     {
         $userBook = $this->userBookService->getUserBookDetails($id, Auth::id());
 
-        if (!$userBook) {
+        if (! $userBook) {
             return response()->json(['message' => 'Livro não encontrado na estante'], 404);
         }
 
@@ -78,9 +84,7 @@ class UserBookController extends Controller
     /**
      * Update the specified user book in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return JsonResponse
      */
     public function update(Request $request, int $id)
     {
@@ -97,7 +101,7 @@ class UserBookController extends Controller
 
             return response()->json([
                 'message' => 'Livro na estante atualizado com sucesso!',
-                'data' => $userBook
+                'data' => $userBook,
             ]);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
@@ -107,12 +111,12 @@ class UserBookController extends Controller
     /**
      * Remove the specified user book from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return JsonResponse
      */
     public function destroy(int $id)
     {
         $this->userBookService->removeBookFromShelf($id, Auth::id());
+
         return response()->json(['message' => 'Livro removido da sua estante com sucesso!']);
     }
 }
