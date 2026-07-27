@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 definePageMeta({
     layout: false
 });
@@ -17,10 +17,31 @@ const form = reactive({
 
 const submit = async () => {
     form.processing = true;
-    console.log('Registering user:', form.name);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    form.processing = false;
-    navigateTo('/dashboard');
+    form.errors = {};
+
+    try {
+        const { register } = useAuth();
+
+        await register({
+            name: form.name,
+            email: form.email,
+            password: form.password,
+            password_confirmation: form.password_confirmation,
+        });
+
+        navigateTo('/dashboard');
+    } catch (error: any) {
+        const { normalize } = useApiError();
+        const err = normalize(error);
+
+        if (err.status === 422) {
+            form.errors = err.fieldErrors || {};
+        } else {
+            console.error(err);
+        }
+    } finally {
+        form.processing = false;
+    }
 };
 </script>
 

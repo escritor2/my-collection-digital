@@ -6,21 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\PasswordUpdateRequest;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Laravel\Fortify\Features;
 
-class SecurityController extends Controller implements HasMiddleware
+class SecurityController extends Controller
 {
-    /**
-     * Get the middleware that should be assigned to the controller.
-     */
-    public static function middleware(): array
+    public function __construct()
     {
-        return Features::canManageTwoFactorAuthentication()
-            && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')
-                ? [new Middleware('password.confirm', only: ['edit'])]
-                : [];
+        if (
+            Features::canManageTwoFactorAuthentication() &&
+            Features::optionEnabled(
+                Features::twoFactorAuthentication(),
+                'confirmPassword'
+            )
+        ) {
+            $this->middleware('password.confirm')->only('edit');
+        }
     }
 
     /**
@@ -36,10 +36,15 @@ class SecurityController extends Controller implements HasMiddleware
             $request->ensureStateIsValid();
 
             $props['twoFactorEnabled'] = $request->user()->hasEnabledTwoFactorAuthentication();
-            $props['requiresConfirmation'] = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm');
+            $props['requiresConfirmation'] = Features::optionEnabled(
+                Features::twoFactorAuthentication(),
+                'confirm'
+            );
         }
 
-        return response()->json(['data' => $props]);
+        return response()->json([
+            'data' => $props,
+        ]);
     }
 
     /**
@@ -51,6 +56,8 @@ class SecurityController extends Controller implements HasMiddleware
             'password' => $request->password,
         ]);
 
-        return response()->json(['message' => 'Senha atualizada com sucesso.']);
+        return response()->json([
+            'message' => 'Senha atualizada com sucesso.',
+        ]);
     }
 }

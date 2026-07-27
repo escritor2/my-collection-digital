@@ -33,6 +33,34 @@ export const useAuth = () => {
         await fetchUser();
     };
 
+    const register = async (data: {
+        name: string;
+        email: string;
+        password: string;
+        password_confirmation: string;
+    }) => {
+        const { fetchCsrfCookie, getXsrfToken, baseURL } = useApi();
+
+        // Obtém o cookie CSRF
+        await fetchCsrfCookie();
+
+        const xsrfToken = getXsrfToken();
+
+        // Cria o usuário
+        await $fetch(`${baseURL}/register`, {
+            method: 'POST',
+            body: data,
+            credentials: 'include',
+            headers: {
+                Accept: 'application/json',
+                ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
+            },
+        });
+
+        // Após registrar, busca o usuário autenticado
+        await fetchUser();
+    };
+
     const logout = async () => {
         const { apiFetch, getXsrfToken, baseURL } = useApi();
         const xsrfToken = getXsrfToken();
@@ -67,6 +95,7 @@ export const useAuth = () => {
         user,
         isAuthenticated,
         login,
+        register,
         logout,
         fetchUser,
         clearAuthState,
