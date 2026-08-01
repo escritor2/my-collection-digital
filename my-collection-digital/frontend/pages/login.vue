@@ -45,62 +45,68 @@ const submit = async () => {
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-zinc-900 text-gray-200">
-        <div class="w-full sm:max-w-md mt-6 px-8 py-8 bg-zinc-800 shadow-2xl overflow-hidden sm:rounded-lg border border-zinc-700">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-background text-foreground">
+        <div class="w-full sm:max-w-md mt-6 px-8 py-8 bg-card shadow-book overflow-hidden sm:rounded-2xl border border-border">
             <div class="mb-8 text-center">
-                <h1 class="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent">Área Restrita</h1>
-                <p class="text-sm text-zinc-400 mt-2">Acesso exclusivo do Administrador</p>
+                <h1 class="font-serif text-3xl font-semibold text-brand">Área Restrita</h1>
+                <p class="text-sm text-muted-foreground mt-2">Acesso exclusivo do Administrador</p>
             </div>
 
-            <div v-if="status" class="mb-4 font-medium text-sm text-green-400">
+            <div v-if="status" class="mb-4 font-medium text-sm text-brand">
                 {{ status }}
             </div>
 
             <form @submit.prevent="submit" class="space-y-6">
                 <div>
-                    <label for="email" class="block text-sm font-medium text-zinc-300">E-mail Administrativo</label>
+                    <label for="email" class="block text-sm font-medium text-foreground">E-mail Administrativo</label>
                     <input
                         id="email"
                         type="email"
-                        class="mt-1 block w-full bg-zinc-900 border border-zinc-700 text-white rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm py-2 px-3"
+                        class="mt-1 block w-full bg-background border border-border text-foreground rounded-md shadow-sm focus:border-ring focus:ring-ring sm:text-sm py-2 px-3"
                         v-model="form.email"
                         required
                         autofocus
                         autocomplete="username"
                         aria-label="Email"
                     />
-                    <div v-if="form.errors.email" class="text-red-400 text-xs mt-1">{{ form.errors.email }}</div>
+                    <div v-if="form.errors.email" class="text-destructive text-xs mt-1">{{ form.errors.email }}</div>
                 </div>
 
                 <div>
-                    <label for="password" class="block text-sm font-medium text-zinc-300">Senha Pessoal</label>
+                    <label for="password" class="block text-sm font-medium text-foreground">Senha Pessoal</label>
                     <input
                         id="password"
                         type="password"
-                        class="mt-1 block w-full bg-zinc-900 border border-zinc-700 text-white rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm py-2 px-3"
+                        class="mt-1 block w-full bg-background border border-border text-foreground rounded-md shadow-sm focus:border-ring focus:ring-ring sm:text-sm py-2 px-3"
                         v-model="form.password"
                         required
                         autocomplete="current-password"
                         aria-label="Senha"
                     />
-                    <div v-if="form.errors.password" class="text-red-400 text-xs mt-1">{{ form.errors.password }}</div>
+                    <div v-if="form.errors.password" class="text-destructive text-xs mt-1">{{ form.errors.password }}</div>
                 </div>
 
                 <div class="block mt-4">
                     <label class="flex items-center">
-                        <input type="checkbox" name="remember" v-model="form.remember" class="rounded bg-zinc-900 border-zinc-700 text-emerald-500 focus:ring-emerald-500" />
-                        <span class="ms-2 text-sm text-zinc-400">Lembrar minha sessão</span>
+                        <input type="checkbox" name="remember" v-model="form.remember" class="rounded bg-background border-border text-primary focus:ring-ring" />
+                        <span class="ms-2 text-sm text-muted-foreground">Lembrar minha sessão</span>
                     </label>
                 </div>
 
                 <div class="flex items-center justify-end mt-6">
-                    <button class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 focus:ring-offset-zinc-800 transition disabled:opacity-50" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    <button class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-primary-foreground bg-brand hover:bg-brand/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring focus:ring-offset-background transition disabled:opacity-50" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                         Entrar no Acervo
                     </button>
                 </div>
+
                 
-                <div class="mt-4 text-center">
-                    <NuxtLink to="/" class="text-sm text-zinc-400 hover:text-white transition">Voltar para a página inicial</NuxtLink>
+                <div class="mt-4 text-center space-y-1">
+                    <div>
+                        <NuxtLink to="/register" class="text-sm text-muted-foreground hover:text-foreground transition">Ainda não tem uma conta? Registre-se!</NuxtLink>
+                    </div>
+                    <div>
+                        <NuxtLink to="/" class="text-sm text-muted-foreground hover:text-foreground transition">Voltar para a página inicial</NuxtLink>
+                    </div>
                 </div>
             </form>
         </div>

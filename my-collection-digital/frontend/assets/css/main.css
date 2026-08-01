@@ -37,6 +37,9 @@
     --color-primary: var(--primary);
     --color-primary-foreground: var(--primary-foreground);
 
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
+
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
 
@@ -128,6 +131,12 @@
   font-family: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif !important;
   letter-spacing: 0.015em;
   line-height: 1.6;
+}
+
+/* Cor de marca fixa — intencionalmente igual nos dois temas */
+:root {
+    --brand: hsl(276, 48%, 61%);
+    --brand-foreground: hsl(0 0% 100%);
 }
 
 /* ============================================

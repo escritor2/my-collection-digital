@@ -18,43 +18,36 @@ useHead({
   title: 'Meu Acervo Digital - Sua Biblioteca Inteligente',
 });
 
-
 const features = [
     {
         title: 'Leitor Inteligente',
         description: 'Suporte nativo para EPUB e PDF com IA integrada para tirar dúvidas em tempo real.',
         icon: BookOpen,
-        color: 'text-purple-400'
     },
     {
         title: 'Estatísticas Detalhadas',
         description: 'Visualize seu progresso de leitura com heatmaps, metas anuais e velocidade de leitura.',
         icon: TrendingUp,
-        color: 'text-blue-400'
     },
     {
         title: 'IA Assistente',
         description: 'Gere resumos, quizzes e flashcards automaticamente a partir dos seus livros.',
         icon: Sparkles,
-        color: 'text-amber-400'
     },
     {
         title: 'Social e Clubes',
         description: 'Crie clubes de leitura, compartilhe destaques e siga seus amigos.',
         icon: MessageSquare,
-        color: 'text-emerald-400'
     },
     {
         title: 'Modo Offline',
         description: 'Continue lendo e anotando mesmo sem internet. Sincronização automática ao voltar.',
         icon: Zap,
-        color: 'text-orange-400'
     },
     {
         title: 'Privacidade Total',
         description: 'Seus dados e seus livros são seus. Criptografia de ponta a ponta e exportação total.',
         icon: Shield,
-        color: 'text-red-400'
     }
 ];
 
@@ -98,8 +91,8 @@ const plans = [
         <header class="relative z-10 w-full border-b border-border bg-background/70 backdrop-blur-md">
             <div class="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center gap-2">
-                    <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 ring-1 ring-primary/20">
-                        <Library class="h-5 w-5 text-primary" />
+                    <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/10 ring-1 ring-brand/20">
+                        <Library class="h-5 w-5 text-brand" />
                     </div>
                     <span class="text-lg font-serif font-semibold tracking-tight text-foreground">Meu Acervo Digital</span>
                 </div>
@@ -175,7 +168,7 @@ const plans = [
                     <!-- Call To Action Buttons -->
                     <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
                         <NuxtLink to="/register">
-                            <Button size="lg" class="h-14 rounded-full bg-primary px-8 text-lg font-bold text-primary-foreground hover:bg-primary/90">
+                            <Button size="lg" class="h-14 rounded-full bg-brand px-8 text-lg font-bold text-brand-foreground hover:bg-brand/90">
                                 Começar Gratuitamente
                                 <ChevronRight class="ml-2 h-5 w-5" />
                             </Button>
@@ -231,7 +224,7 @@ const plans = [
                         class="border-border bg-card/70 shadow-book transition-colors hover:bg-card"
                     >
                         <CardHeader>
-                            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand ring-1 ring-brand/20">
                                 <component :is="feature.icon" class="h-6 w-6" />
                             </div>
                             <CardTitle class="font-serif text-xl font-semibold text-foreground">{{ feature.title }}</CardTitle>
@@ -263,12 +256,12 @@ const plans = [
                     >
                         <!-- Lombada: aba lateral de identificação do plano -->
                         <div
-                            :class="['absolute left-0 top-0 h-full w-2', plan.popular ? 'bg-primary' : 'bg-border']"
+                            :class="['absolute left-0 top-0 h-full w-2', plan.popular ? 'bg-brand' : 'bg-border']"
                             aria-hidden="true"
                         />
 
 
-                        <div v-if="plan.popular" class="absolute top-6 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold uppercase tracking-wider text-primary-foreground">
+                        <div v-if="plan.popular" class="absolute top-6 left-1/2 -translate-x-1/2 rounded-full bg-brand px-4 py-1 text-xs font-bold uppercase tracking-wider text-brand-foreground">
                             Mais Popular
                         </div>
 
@@ -292,7 +285,7 @@ const plans = [
 
 
                         <Button :variant="plan.popular ? 'default' : 'outline'"
-                            :class="['w-full rounded-xl h-12 font-bold transition-all', plan.popular ? 'bg-primary text-primary-foreground hover:bg-primary/90' : 'border-border']">
+                            :class="['w-full rounded-xl h-12 font-bold transition-all', plan.popular ? 'bg-brand text-brand-foreground hover:bg-brand/90' : 'border-border']">
                             {{ plan.cta }}
                         </Button>
                     </div>
@@ -308,7 +301,7 @@ const plans = [
                         Junte-se a centenas de leitores que já estão usando o Meu Acervo Digital para organizar sua vida literária.
                     </p>
                     <NuxtLink to="/register">
-                        <Button size="lg" class="rounded-full bg-primary px-10 text-lg font-bold text-primary-foreground hover:bg-primary/90">
+                        <Button size="lg" class="rounded-full bg-brand px-10 text-lg font-bold text-brand-foreground hover:bg-brand/90">
                             Começar Agora Gratuitamente
                         </Button>
                     </NuxtLink>
