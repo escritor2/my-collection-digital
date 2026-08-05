@@ -39,6 +39,8 @@
 
     --color-brand: var(--brand);
     --color-brand-foreground: var(--brand-foreground);
+    --color-achievement: var(--achievement);
+    --color-achievement-foreground: var(--achievement-foreground);
 
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
@@ -137,7 +139,10 @@
 :root {
     --brand: hsl(276, 48%, 61%);
     --brand-foreground: hsl(0 0% 100%);
+    --achievement: hsl(38 92% 50%);
+    --achievement-foreground: hsl(26 45% 12%);
 }
+
 
 /* ============================================
    MODO CLARO — "Biblioteca aconchegante"

@@ -56,6 +56,11 @@ const mainNavItems: NavItem[] = [
         href: '/social',
         icon: Users,
     },
+    {
+        title: 'Clubes',
+        href: '/clubs',
+        icon: Users,
+    },
 ];
 
 // const footerNavItems: NavItem[] = [
