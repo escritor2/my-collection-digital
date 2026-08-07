@@ -39,8 +39,6 @@
 
     --color-brand: var(--brand);
     --color-brand-foreground: var(--brand-foreground);
-    --color-achievement: var(--achievement);
-    --color-achievement-foreground: var(--achievement-foreground);
 
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
@@ -125,6 +123,26 @@
         border-bottom-left-radius: 4px;
         box-shadow: -2px 2px 4px hsl(30 25% 25% / 0.08);
     }
+
+    /* Marcador de página (bookmark) — assinatura visual do Dashboard: nível, sequência, destaques */
+    .bookmark-tag {
+        clip-path: polygon(0 0, 100% 0, 100% 78%, 50% 100%, 0 78%);
+    }
+
+    /* Selo de conquista (ex-libris) — medalhão para achievements, com anel pontilhado quando bloqueado */
+    .achievement-seal {
+        border: 2px dashed var(--color-border);
+    }
+    .achievement-seal.is-earned {
+        border-style: solid;
+        border-color: var(--color-brand);
+    }
+
+    /* Cartão perfurado — moldura de "ficha de biblioteca" pontilhada usada no heatmap de leitura */
+    .card-ledger {
+        border: 1.5px dashed var(--color-border);
+        border-radius: var(--radius-lg);
+    }
 }
 
 /* Dyslexia-friendly mode (Phase 5) */
@@ -139,10 +157,7 @@
 :root {
     --brand: hsl(276, 48%, 61%);
     --brand-foreground: hsl(0 0% 100%);
-    --achievement: hsl(38 92% 50%);
-    --achievement-foreground: hsl(26 45% 12%);
 }
-
 
 /* ============================================
    MODO CLARO — "Biblioteca aconchegante"

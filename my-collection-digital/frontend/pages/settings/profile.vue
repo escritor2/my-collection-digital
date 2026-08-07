@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { Separator } from '~/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { useInitials } from '~/composables/useInitials';
+import { Loader2, X } from 'lucide-vue-next';
 import { ref, onMounted } from 'vue';
 
 definePageMeta({
@@ -16,7 +17,7 @@ definePageMeta({
 
 const { user, fetchUser } = useAuth();
 const { apiFetch } = useApi();
-const initials = useInitials();
+const { getInitials } = useInitials();
 
 const isLoading = ref(false);
 const message = ref<{ type: 'success' | 'error', text: string } | null>(null);
@@ -25,6 +26,10 @@ const form = ref({
     name: '',
     email: '',
 });
+
+const avatarInput = ref<HTMLInputElement | null>(null);
+const isUploadingAvatar = ref(false);
+const avatarError = ref<string | null>(null);
 
 onMounted(async () => {
     if (!user.value) {
@@ -52,6 +57,54 @@ const handleSubmit = async () => {
         isLoading.value = false;
     }
 };
+
+const triggerAvatarPicker = () => {
+    avatarInput.value?.click();
+};
+
+const onAvatarSelected = async (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    avatarError.value = null;
+
+    if (file.size > 4 * 1024 * 1024) {
+        avatarError.value = 'Arquivo muito grande. Máximo de 4MB.';
+        input.value = '';
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    isUploadingAvatar.value = true;
+    try {
+        await apiFetch('/settings/profile/avatar', {
+            method: 'POST',
+            body: formData,
+        });
+        await fetchUser();
+    } catch (e: any) {
+        avatarError.value = e.data?.message || e.data?.errors?.avatar?.[0] || 'Erro ao enviar a foto.';
+    } finally {
+        isUploadingAvatar.value = false;
+        input.value = '';
+    }
+};
+
+const removeAvatar = async () => {
+    isUploadingAvatar.value = true;
+    avatarError.value = null;
+    try {
+        await apiFetch('/settings/profile/avatar', { method: 'DELETE' });
+        await fetchUser();
+    } catch (e: any) {
+        avatarError.value = e.data?.message || 'Erro ao remover a foto.';
+    } finally {
+        isUploadingAvatar.value = false;
+    }
+};
 </script>
 
 <template>
@@ -72,15 +125,29 @@ const handleSubmit = async () => {
             <Card class="border-none shadow-none bg-transparent">
                 <CardContent class="p-0 space-y-6">
                     <div class="flex items-center gap-4">
-                        <Avatar class="h-20 w-20 border-2 border-purple-500/20">
-                            <AvatarImage v-if="user?.avatar_url" :src="user.avatar_url" />
-                            <AvatarFallback class="bg-purple-100 text-purple-600 text-xl font-bold">
-                                {{ initials(user?.name) }}
-                            </AvatarFallback>
-                        </Avatar>
+                        <div class="relative">
+                            <Avatar class="h-20 w-20 border-2 border-purple-500/20">
+                                <AvatarImage v-if="user?.avatar_url" :src="user.avatar_url" />
+                                <AvatarFallback class="bg-purple-100 text-purple-600 text-xl font-bold">
+                                    {{ getInitials(user?.name) }}
+                                </AvatarFallback>
+                            </Avatar>
+                            <div v-if="isUploadingAvatar" class="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center">
+                                <Loader2 class="h-5 w-5 text-white animate-spin" />
+                            </div>
+                        </div>
                         <div>
-                            <Button type="button" variant="outline" size="sm">Alterar Avatar</Button>
-                            <p class="text-[10px] text-muted-foreground mt-2 uppercase font-bold tracking-widest">JPG, GIF ou PNG. Máx 2MB.</p>
+                            <div class="flex items-center gap-2">
+                                <input ref="avatarInput" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="onAvatarSelected" />
+                                <Button type="button" variant="outline" size="sm" :disabled="isUploadingAvatar" @click="triggerAvatarPicker">
+                                    {{ user?.avatar_url ? 'Alterar foto' : 'Adicionar foto' }}
+                                </Button>
+                                <Button v-if="user?.avatar_url" type="button" variant="ghost" size="sm" class="text-muted-foreground gap-1" :disabled="isUploadingAvatar" @click="removeAvatar">
+                                    <X class="h-3.5 w-3.5" /> Remover
+                                </Button>
+                            </div>
+                            <p class="text-[10px] text-muted-foreground mt-2 uppercase font-bold tracking-widest">JPG, PNG ou WEBP. Máx 4MB.</p>
+                            <p v-if="avatarError" class="text-xs text-red-500 mt-1">{{ avatarError }}</p>
                         </div>
                     </div>
 

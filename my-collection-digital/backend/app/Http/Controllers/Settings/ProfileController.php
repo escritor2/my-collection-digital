@@ -40,6 +40,39 @@ class ProfileController extends Controller
     }
 
     /**
+     * Update the user's avatar (profile photo).
+     */
+    public function updateAvatar(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'avatar' => ['required', 'image', 'max:4096', 'mimes:jpg,jpeg,png,webp'],
+        ]);
+
+        $user = $request->user();
+
+        $user->clearMediaCollection('avatar');
+        $user->addMedia($validated['avatar'])->toMediaCollection('avatar');
+
+        return response()->json([
+            'message' => 'Foto de perfil atualizada com sucesso.',
+            'data' => ['avatar_url' => $user->fresh()->avatar_url],
+        ]);
+    }
+
+    /**
+     * Remove the user's avatar (profile photo).
+     */
+    public function destroyAvatar(Request $request): JsonResponse
+    {
+        $request->user()->clearMediaCollection('avatar');
+
+        return response()->json([
+            'message' => 'Foto de perfil removida.',
+            'data' => ['avatar_url' => null],
+        ]);
+    }
+
+    /**
      * Delete the user's profile.
      */
     public function destroy(ProfileDeleteRequest $request): JsonResponse

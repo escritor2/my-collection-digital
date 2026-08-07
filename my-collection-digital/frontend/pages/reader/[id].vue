@@ -590,9 +590,15 @@ watch(
                         <p class="text-sm text-red-400">{{ error }}</p>
                     </div>
                     <div v-else-if="!fileBlobUrl" class="w-full h-full flex flex-col items-center justify-center space-y-4">
+                        <FileText class="w-10 h-10 text-zinc-700" />
                         <p class="text-sm text-zinc-500">Nenhum arquivo enviado ainda.</p>
-                        <div v-if="webReaderLink" class="flex flex-col items-center gap-3">
-                            <p class="text-xs text-zinc-400">Mas você pode ler este livro online:</p>
+                        <p class="text-xs text-zinc-600 max-w-xs text-center">Envie o arquivo (PDF ou EPUB) deste livro que você já possui para poder ler, fazer anotações e usar a IA.</p>
+                        <label class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium cursor-pointer transition-colors">
+                            <input type="file" class="hidden" accept=".pdf,.epub,application/pdf,application/epub+zip" @change="uploadFile" />
+                            <Upload class="w-4 h-4" /> Enviar arquivo (PDF/EPUB)
+                        </label>
+                        <div v-if="webReaderLink" class="flex flex-col items-center gap-3 pt-2">
+                            <p class="text-xs text-zinc-400">Ou leia este livro online:</p>
                             <Button 
                                 variant="secondary" 
                                 class="bg-purple-600 hover:bg-purple-500 text-white flex items-center gap-2"
@@ -601,7 +607,6 @@ watch(
                                 <ExternalLink class="w-4 h-4" /> Abrir Web Reader do Google
                             </Button>
                         </div>
-                        <p v-else class="text-xs text-zinc-600">Faça upload de um PDF/EPUB para habilitar a IA.</p>
                     </div>
 
                     <PdfReader

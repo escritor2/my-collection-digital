@@ -91,6 +91,35 @@ class SocialController extends Controller
         return response()->json(['data' => $feed]);
     }
 
+    public function searchUsers(Request $request)
+    {
+        $query = trim((string) $request->query('q', ''));
+        $viewerId = Auth::id();
+
+        $users = User::query()
+            ->when($query !== '', fn ($q) => $q->where('name', 'like', "%{$query}%"))
+            ->where('id', '!=', $viewerId)
+            ->orderBy('name')
+            ->limit(20)
+            ->get(['id', 'name', 'email']);
+
+        $followingIds = UserFollow::query()
+            ->where('follower_id', $viewerId)
+            ->whereIn('followed_id', $users->pluck('id'))
+            ->pluck('followed_id')
+            ->all();
+
+        return response()->json([
+            'data' => $users->map(fn ($u) => [
+                'id' => $u->id,
+                'name' => $u->name,
+                'email' => $u->email,
+                'avatar_url' => $u->avatar_url,
+                'is_following' => in_array($u->id, $followingIds, true),
+            ]),
+        ]);
+    }
+
     public function profile(User $user)
     {
         $viewerId = Auth::id();
@@ -101,7 +130,7 @@ class SocialController extends Controller
 
         return response()->json([
             'data' => [
-                'user' => $user->only(['id', 'name', 'email', 'created_at']),
+                'user' => $user->only(['id', 'name', 'email', 'avatar_url', 'created_at']),
                 'followers_count' => UserFollow::query()->where('followed_id', $user->id)->count(),
                 'following_count' => UserFollow::query()->where('follower_id', $user->id)->count(),
                 'is_following' => $isFollowing,

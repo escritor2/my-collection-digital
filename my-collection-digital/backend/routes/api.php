@@ -87,6 +87,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::post('profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+        Route::delete('profile/avatar', [ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
         Route::get('security', [SecurityController::class, 'edit'])->name('security.edit');
         Route::put('password', [SecurityController::class, 'update'])
             ->middleware('throttle:6,1')
@@ -95,6 +97,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('social')->group(function () {
         Route::get('feed', [SocialController::class, 'feed']);
+        Route::get('users/search', [SocialController::class, 'searchUsers']);
         Route::get('profile/{user}', [SocialController::class, 'profile']);
         Route::post('follow/{user}', [SocialController::class, 'follow']);
         Route::delete('follow/{user}', [SocialController::class, 'unfollow']);
