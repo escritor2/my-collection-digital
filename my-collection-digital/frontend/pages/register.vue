@@ -29,7 +29,7 @@ const submit = async () => {
             password_confirmation: form.password_confirmation,
         });
 
-        navigateTo('/dashboard');
+        navigateTo('/login');
     } catch (error: any) {
         const { normalize } = useApiError();
         const err = normalize(error);
