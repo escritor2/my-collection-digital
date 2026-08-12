@@ -4,6 +4,14 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   ssr: true,
   compatibilityDate: '2024-11-01',
+  app: {
+    head: {
+      title: 'Meu Acervo Digital',
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
+      ]
+    }
+  },
   devtools: { enabled: process.env.NODE_ENV !== 'production' },
   experimental: {
     appManifest: false,

@@ -237,62 +237,6 @@ const plans = [
             </section>
 
 
-           <!-- Pricing Section -->
-            <section id="pricing" class="py-32 bg-secondary/25 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-20">
-                    <h2 class="font-serif text-3xl font-semibold text-foreground sm:text-5xl mb-4">Preços Simples e Transparentes</h2>
-                    <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
-                        Escolha o plano que melhor se adapta ao seu ritmo de leitura.
-                    </p>
-                </div>
-
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    <div
-                        v-for="plan in plans"
-                        :key="plan.name"
-                        :class="['relative flex flex-col overflow-hidden rounded-3xl border pl-9 pr-8 py-8 shadow-book transition-all',
-                            plan.popular ? 'bg-card border-primary/40 scale-105 z-10 page-fold' : 'bg-card/70 border-border']"
-                    >
-                        <!-- Lombada: aba lateral de identificação do plano -->
-                        <div
-                            :class="['absolute left-0 top-0 h-full w-2', plan.popular ? 'bg-brand' : 'bg-border']"
-                            aria-hidden="true"
-                        />
-
-
-                        <div v-if="plan.popular" class="absolute top-6 left-1/2 -translate-x-1/2 rounded-full bg-brand px-4 py-1 text-xs font-bold uppercase tracking-wider text-brand-foreground">
-                            Mais Popular
-                        </div>
-
-
-                        <div :class="['mb-8', plan.popular && 'mt-6']">
-                            <h3 class="font-serif text-xl font-semibold text-foreground mb-2">{{ plan.name }}</h3>
-                            <div class="flex items-baseline gap-1">
-                                <span class="text-4xl font-extrabold text-foreground">{{ plan.price }}</span>
-                                <span v-if="plan.price !== 'R$ 0'" class="text-muted-foreground text-sm">/mês</span>
-                            </div>
-                            <p class="mt-2 text-sm text-muted-foreground">{{ plan.description }}</p>
-                        </div>
-
-
-                        <ul class="mb-10 flex-1 space-y-4">
-                            <li v-for="feature in plan.features" :key="feature" class="flex items-center gap-3 text-sm text-foreground/80">
-                                <Check class="h-4 w-4 text-primary shrink-0" />
-                                {{ feature }}
-                            </li>
-                        </ul>
-
-
-                        <Button :variant="plan.popular ? 'default' : 'outline'"
-                            :class="['w-full rounded-xl h-12 font-bold transition-all', plan.popular ? 'bg-brand text-brand-foreground hover:bg-brand/90' : 'border-border']">
-                            {{ plan.cta }}
-                        </Button>
-                    </div>
-                </div>
-            </section>
-
-
             <!-- CTA Final -->
             <section class="py-32 text-center">
                 <div class="max-w-3xl mx-auto rounded-3xl bg-card/70 border border-border p-12 shadow-book backdrop-blur-md">
